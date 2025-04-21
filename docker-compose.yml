@@ -1,0 +1,24 @@
+services:
+
+  rasa:
+    image: rasa/rasa:3.6.6
+    volumes:
+      - ./rasa:/app
+    ports:
+      - "5005:5005"
+    command: run --enable-api --cors "*"
+
+  action_server:
+    image: rasa/rasa-sdk:3.6.2
+    volumes:
+      - ./rasa/actions:/app/actions
+    ports:
+      - "5055:5055"
+
+  vosk_stt:
+    build: ./vosk
+    ports:
+      - "7000:7000"
+    volumes:
+      - ./vosk:/app
+    restart: unless-stopped
